@@ -1,5 +1,5 @@
 library(data.table)
-library(dplyr)
+library(reshape2)
 
 ##Download file. ################
 url<-"https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
@@ -75,5 +75,7 @@ names(df)<-gsub("BodyBody", "Body", names(df))
 names(df)<-gsub("Mag", "Magnitude", names(df))
 
 ## 5.) CREATE SECOND INDEPENDENT DATA SET WITH MEAN FOR EACH SUBJECT AND ACTIVITY ###
-tidy<-lapply(3:81, function(x) df%>%group_by(subject,activity)%>%summarize(rows=n(),mean(df[,x]))) 
+melted<- melt(df, id = c("subject", "activity"))
+tidy <- dcast(melted, subject + activity ~ variable, mean)
+
 write.table(tidy, file = "tidy.txt",row.name=FALSE)
