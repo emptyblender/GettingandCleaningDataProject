@@ -76,6 +76,6 @@ names(df)<-gsub("Mag", "Magnitude", names(df))
 
 ## 5.) CREATE SECOND INDEPENDENT DATA SET WITH MEAN FOR EACH SUBJECT AND ACTIVITY ###
 melted<- melt(df, id = c("subject", "activity"))
-tidy <- dcast(melted, subject + activity ~ variable, mean)
+meanData <- dcast(melted, subject + activity ~ variable, mean)
 
-write.table(tidy, file = "tidy.txt",row.name=FALSE)
+write.table(meanData, file = "meanData.txt",row.name=FALSE)
